@@ -2,7 +2,7 @@
 	<div id="myImagesCont">
 		<div v-for="(item, i) in myImages" :key="item._id">
 			<div class="imageCard" :id="`image-${item._id}`">
-				<div class="imgCont" @click="showPopup('imagePopup',item)">
+				<div class="imgCont" @click="showPopup('imagePopup', item)">
 					<img :src="`${getUrl}/uploads/?img=${item.filename}`" />
 				</div>
 				<!-- <div class="textCont">
@@ -31,7 +31,7 @@
 	import $ from "jquery";
 	export default {
 		name: "MyImages",
-		emits:['editImagePopup','copyImageLink','imagePopup'],
+		emits: ["editImagePopup", "copyImageLink", "popup"],
 		data: () => {
 			return {
 				myImages: [],
@@ -47,12 +47,9 @@
 			document.onclick = this.documentClick;
 		},
 		methods: {
-			showPopup(popup, currentImage){
+			showPopup(popup, currentImage) {
 				console.log(currentImage);
-				this.$emit('popup',{type:popup,image:currentImage});
-			},
-			showImagePopup(image){
-				this.$emit('imagePopup',image);
+				this.$emit("popup", { type: popup, image: currentImage });
 			},
 			documentClick(e) {
 				let dropdown_selector = $(".actions");
@@ -127,7 +124,7 @@
 		overflow: hidden;
 	}
 	#myImagesCont .imageCard .imgCont img {
-		width:300px;
+		width: 300px;
 		height: 300px;
 		object-fit: cover;
 		transition: transform 0.5s ease-in-out;
@@ -181,16 +178,16 @@
 	#myImagesCont .imageCard .textCont .options .actions ul li {
 		border-bottom: 1px solid #d8d8d8;
 	}
-	#myImagesCont .imageCard .textCont .options .actions ul li button{
-		color:#fff;
-		background:transparent;
+	#myImagesCont .imageCard .textCont .options .actions ul li button {
+		color: #fff;
+		background: transparent;
 		border: 0;
 		padding: 4px 0;
 		width: 100%;
 		text-align: start;
 	}
-	#myImagesCont .imageCard .textCont .options .actions ul li button:hover{
-		background:rgba(0,0,0,.4);
+	#myImagesCont .imageCard .textCont .options .actions ul li button:hover {
+		background: rgba(0, 0, 0, 0.4);
 	}
 	#myImagesCont .imageCard .textCont .options svg {
 		position: absolute;

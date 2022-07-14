@@ -11,6 +11,7 @@ export default createStore({
 		userImages: {},
 		empty: null,
 		error: { message: null, password: null },
+		copy: false,
 	},
 	mutations: {
 		setEmpty(state, payload) {
