@@ -36,18 +36,42 @@
 				try {
 					const { title, description } = this.imageBody;
 					this.updateImage(this.imageBody);
-					this.$emit("updateImg", { title, description });
+					let aux = {
+						...this.getCurrentImage,
+					};
+					aux.title = title;
+					aux.description = description;
+					this.updateCurrentImage(aux);
+					this.showMsg();
+					this.$emit("updateImg");
 				} catch (err) {
 					console.log(err);
 				}
 			},
-			...mapActions(["updateImage"]),
+			showMsg() {
+				console.log("msg");
+				console.log(this.getCustomMsg);
+				const text = "Image edited seccessfully";
+				const msg = {
+					visible: true,
+					text,
+				};
+				this.updateCustomMsg(msg);
+				setTimeout(() => {
+					const emptyMsg = {
+						visible: false,
+						text,
+					};
+					this.updateCustomMsg(emptyMsg);
+				}, 3000);
+			},
+			...mapActions(["updateImage", "updateCurrentImage", "updateCustomMsg"]),
 		},
 		computed: {
 			emptyClass() {
 				return this.getEmpty ? "emptyField" : "completeField";
 			},
-			...mapGetters(["getEmpty"]),
+			...mapGetters(["getEmpty", "getCurrentImage", "getCustomMsg"]),
 		},
 	};
 </script>

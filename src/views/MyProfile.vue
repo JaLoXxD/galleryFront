@@ -1,26 +1,29 @@
 <template>
 	<div id="profileContainer">
+		<ConfirmationMsg :visible="getCustomMsg.visible" :text="getCustomMsg.text" />
 		<div class="userCont">
 			<h1>{{ this.getUserData.name }}</h1>
 		</div>
 		<MyImages :userId="this.getUserData.id" @editImagePopup="toogleEditPopup" @popup="tooglePopup" />
-		<Popup :visible="showPopup" :image="currentImage" @popup="tooglePopup" @updateImage="updateCurrentImage" />
-		<!-- <ImagePopup :visible="visibleImage" @imagePopup="toogleImagePopup" :image="currentImage" @editImagePopup="toogleEditPopup" @copyImageLink="toogleCopyPopup" /> -->
+		<Popup :visible="showPopup" :image="getCurrentImage" @popup="tooglePopup" @updateImage="updateCurrentImage" />
+		<!-- <ImagePopup :visible="visibleImage" @imagePopup="toogleImagePopup" :image="getCurrentImage" @editImagePopup="toogleEditPopup" @copyImageLink="toogleCopyPopup" /> -->
 		<!-- <EditImage :visible="visiblePopup" :imgID="imageID" @editImagePopup="toogleEditPopup" /> -->
 	</div>
 </template>
 
 <script>
-	import { mapGetters } from "vuex";
+	import { mapActions, mapGetters } from "vuex";
 	import MyImages from "../components/User/Profile/MyImages.vue";
 	import EditImage from "../components/User/Actions/EditImage.vue";
 	import Popup from "../components/User/Profile/Popup.vue";
+	import ConfirmationMsg from "../components/User/Actions/ConfirmationMsg.vue";
 
 	export default {
 		components: {
 			MyImages,
 			Popup,
 			EditImage,
+			ConfirmationMsg,
 		},
 		data() {
 			return {
@@ -29,17 +32,16 @@
 				visibleImage: false,
 				imageID: "",
 				imageURL: "",
-				currentImage: {},
 			};
 		},
 		methods: {
 			tooglePopup({ type, image }) {
 				this.showPopup = !this.showPopup;
 				if (type === "imagePopup") {
-					this.currentImage = image;
+					this.updateCurrentImage(image);
 				}
 				if (type === "") {
-					this.currentImage = {};
+					this.updateCurrentImage({});
 				}
 			},
 			toogleEditPopup(id) {
@@ -48,12 +50,12 @@
 			},
 			toogleImagePopup(image) {
 				this.visibleImage = !this.visibleImage;
-				this.currentImage = image;
-				console.log(this.currentImage);
+				this.updateCurrentImage(image);
+				console.log(this.getCurrentImage);
 			},
 			updateCurrentImage(options) {
 				console.log(options);
-				const {title, description} = options[0];
+				const { title, description } = options[0];
 				this.currentImage.title = title;
 				this.currentImage.description = description;
 			},
@@ -83,11 +85,12 @@
 				document.execCommand("copy");
 				tmpTextField.remove();
 			}, */
+			...mapActions(["updateCurrentImage"]),
 		},
 		mounted() {},
 		name: "MyProfile",
 		computed: {
-			...mapGetters(["getUserData", "getUrl"]),
+			...mapGetters(["getUserData", "getUrl", "getCurrentImage", "getCustomMsg"]),
 		},
 	};
 </script>

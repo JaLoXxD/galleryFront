@@ -6,7 +6,7 @@
 			</div>
 			<div class="infoCont">
 				<div class="infoHead">
-					<h4>{{ userData.name }}</h4>
+					<h4>{{ image.title }}</h4>
 					<div id="optionsBtn" class="icon" @click="toogleOptions">
 						<button id="popupOptions"><font-awesome-icon :icon="['fas', 'ellipsis-vertical']" /></button>
 					</div>
@@ -21,7 +21,7 @@
 				<p v-if="!editImage">
 					{{ userData.name }} <span id="imageDescription">{{ image.description }}</span>
 				</p>
-				<EditImage v-if="editImage" :image="image" @updateImg="updateCurrentImage" />
+				<EditImage v-if="editImage" :image="image" @updateImg="toogleEdit" />
 			</div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 	import EditImage from "../Actions/EditImage.vue";
 	export default {
 		name: "Popup",
-		emits: ["popup", "updateImage"],
+		emits: ["popup"],
 		components: {
 			EditImage,
 		},
@@ -66,10 +66,6 @@
 				if (this.optionsMenu && !event.path.includes(menu)) {
 					this.optionsMenu = !this.optionsMenu;
 				}
-			},
-			updateCurrentImage(newImage) {
-				this.toogleEdit();
-				this.$emit("updateImage", [newImage]);
 			},
 			toogleOptions() {
 				this.optionsMenu = !this.optionsMenu;

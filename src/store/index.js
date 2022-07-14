@@ -9,9 +9,14 @@ export default createStore({
 		startSession: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).startSession : null,
 		user: null,
 		userImages: {},
+		currentImage: {},
 		empty: null,
 		error: { message: null, password: null },
 		copy: false,
+		customMsg: {
+			visible: false,
+			text: "",
+		},
 	},
 	mutations: {
 		setEmpty(state, payload) {
@@ -26,6 +31,9 @@ export default createStore({
 		setUserImages(state, payload) {
 			state.userImages = payload;
 		},
+		setCurrentImage(state, payload) {
+			state.currentImage = payload;
+		},
 		logoutUser(state, payload) {
 			localStorage.removeItem("user");
 			state.user = null;
@@ -35,6 +43,10 @@ export default createStore({
 			if (localStorage.getItem("user")) {
 				state.user = localStorage.getItem("user");
 			}
+		},
+		setCustomMsg(state, payload) {
+			console.log(payload);
+			state.customMsg = payload;
 		},
 	},
 	actions: {
@@ -279,6 +291,12 @@ export default createStore({
 		isLogin({ commit }) {
 			commit("isAuth");
 		},
+		updateCurrentImage({ commit }, image) {
+			commit("setCurrentImage", image);
+		},
+		updateCustomMsg({ commit }, message) {
+			commit("setCustomMsg", message);
+		},
 	},
 	getters: {
 		getUser(state) {
@@ -289,6 +307,12 @@ export default createStore({
 		},
 		getUserImages(state) {
 			return state.userImages;
+		},
+		getCurrentImage(state) {
+			return state.currentImage;
+		},
+		getCustomMsg(state) {
+			return state.customMsg;
 		},
 		getToken(state) {
 			return state.token;
